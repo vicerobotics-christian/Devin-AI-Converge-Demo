@@ -80,10 +80,8 @@ function passesFilters(artist: Artist, intent: Intent): boolean {
 }
 
 export function rank(artists: Artist[], intent: Intent, limit = 24): SearchHit[] {
-  const filtered = artists.filter((a) => passesFilters(a, intent))
-  const pool = filtered.length ? filtered : artists
   const hits: SearchHit[] = []
-  for (const artist of pool) {
+  for (const artist of artists.filter((a) => passesFilters(a, intent))) {
     let text = cache.get(artist)
     if (!text) cache.set(artist, (text = haystack(artist)))
     let score = 0
