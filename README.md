@@ -7,6 +7,7 @@ A demo web app where artists find each other with a single prompt. Every artist 
 - **Prompt-first home** with discipline filters and example requests.
 - **Link-in-bio profiles** with eight looks (Poster, Gallery, Darkroom, Cinema, Flow, Editorial, Stage, Blueprint), defaulted by discipline and selectable during onboarding.
 - **Onboarding modeled on Luma's flow**: claim a handle, pick your craft, profile (photo, name, bio), links, then a look, with a live phone preview. Demo profiles are stored only in the browser's `localStorage`.
+- **Tap-to-talk search**: the mic next to the search box dictates your request and searches when you pause, following the gallery's voice flow (tap, speak, ~1.5 s of quiet ends the turn, 25 s cap). Uses the browser's built-in speech recognition (Chrome, Edge, Safari), so there's no key or server; the button hides where it isn't supported.
 - **Search that understands vibes**: mood words like *upbeat*, *mellow*, *heavy* and *romantic* map to genres (house, reggaeton, jazz, soul…).
 - **Reach out** panel showing only publicly published contacts (official email listed on Wikidata, Instagram DM, official website, X) plus a suggested intro.
 

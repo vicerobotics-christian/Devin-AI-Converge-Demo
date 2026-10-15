@@ -3,6 +3,7 @@ import type { Artist, Discipline, SearchHit } from '../types'
 import { explain, search, type Engine } from '../lib/ai'
 import { DISCIPLINE_LABEL, disciplinesOf } from '../lib/themes'
 import { ArtistCard } from '../components/ArtistCard'
+import { useVoiceInput } from '../lib/voice'
 
 const PROMPTS = [
   'Upbeat artists to remix my next single',
@@ -47,6 +48,8 @@ export function Home({ artists, engine, me }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [engine])
 
+  const voice = useVoiceInput(setQuery, (text) => run(text))
+
   function cancelSearch() {
     runId.current++
     setBusy(false)
@@ -87,11 +90,28 @@ export function Home({ artists, engine, me }: Props) {
                 </button>
               ))}
             </div>
+            {voice.supported && (
+              <button
+                type="button"
+                className={`mic ${voice.state === 'listening' ? 'mic-on' : ''}`}
+                aria-pressed={voice.state === 'listening'}
+                aria-label={voice.state === 'listening' ? 'Stop listening' : 'Search by voice'}
+                onClick={() => (voice.state === 'listening' ? voice.stop() : voice.start())}
+              >
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="9" y="3" width="6" height="11" rx="3" />
+                  <path d="M5 11a7 7 0 0 0 14 0M12 18v3" />
+                </svg>
+              </button>
+            )}
             <button type="submit" className="send" disabled={!query.trim() || busy} aria-label="Search">
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </button>
           </div>
         </form>
+        <p className={`voice-status ${voice.state === 'error' ? 'voice-error' : ''}`} role="status">
+          {voice.state === 'listening' ? 'Listening… pause when you\'re done.' : voice.error}
+        </p>
         <ul className="suggestions" aria-label="Example requests">
           {PROMPTS.map((p) => (
             <li key={p}><button type="button" onClick={() => { setQuery(p); run(p) }}>{p}</button></li>

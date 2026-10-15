@@ -65,6 +65,12 @@ h1, h2 { line-height: 1.15; margin: 0; letter-spacing: -0.02em; }
 .prompt-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 6px; }
 .prompt-chips { display: flex; gap: 6px; flex-wrap: wrap; }
 .ghost-chip { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 6px 12px; font-size: .88rem; font-weight: 550; min-height: 36px; }
+.prompt-row > .mic { margin-left: auto; }
+.mic { flex: none; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: #fff; color: var(--ink); display: grid; place-items: center; }
+.mic-on { background: #e0245e; border-color: #e0245e; color: #fff; animation: mic-pulse 1.2s ease-in-out infinite; }
+@keyframes mic-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(224,36,94,.45); } 50% { box-shadow: 0 0 0 10px rgba(224,36,94,0); } }
+.voice-status { min-height: 1.5em; margin: 10px 0 0; font-weight: 600; color: #2d2c33; }
+.voice-error { color: #9b1036; }
 .send { flex: none; width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--ink); color: #fff; display: grid; place-items: center; }
 .send:disabled { background: #8d8b93; cursor: not-allowed; }
 
