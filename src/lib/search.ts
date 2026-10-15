@@ -34,8 +34,12 @@ export const VIBES: Record<string, { words: string[]; genres: RegExp }> = {
 
 const STOP = new Set('a an and are as at be by can for from find get help i in into is it looking me my need of on or show someone somebody that the to who with want wants would like people person artist artists miami florida fl local nearby music'.split(' '))
 
+export function fold(text: string): string {
+  return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+}
+
 function tokens(text: string): string[] {
-  return text.toLowerCase().replace(/[^a-z0-9&\s-]/g, ' ').split(/\s+/).filter(Boolean)
+  return fold(text).replace(/[^a-z0-9&\s-]/g, ' ').split(/\s+/).filter(Boolean)
 }
 
 export function vibesFor(genres: string[]): string[] {
@@ -44,7 +48,7 @@ export function vibesFor(genres: string[]): string[] {
 }
 
 export function parseIntent(query: string): Intent {
-  const q = ` ${query.toLowerCase()} `
+  const q = ` ${fold(query)} `
   const has = (s: string) => q.includes(` ${s} `) || q.includes(` ${s}s `) || q.includes(` ${s},`) || q.includes(` ${s}.`)
   const disciplines = (Object.keys(SYNONYMS) as Discipline[]).filter((d) => SYNONYMS[d].some(has))
   const vibes = Object.entries(VIBES).filter(([, v]) => v.words.some(has)).map(([k]) => k)
@@ -63,14 +67,23 @@ export function parseIntent(query: string): Intent {
 }
 
 function haystack(a: Artist): string {
-  return [a.name, a.tagline, a.bio, ...a.occupations, ...a.genres, ...a.instruments, ...a.movements].join(' ').toLowerCase()
+  return fold([a.name, a.tagline, a.bio, ...a.occupations, ...a.genres, ...a.instruments, ...a.movements].join(' '))
 }
 
 const cache = new WeakMap<Artist, string>()
 
+function passesFilters(artist: Artist, intent: Intent): boolean {
+  if (intent.disciplines.length && !disciplinesOf(artist).some((d) => intent.disciplines.includes(d))) return false
+  if (intent.miami === 'born' && !artist.miami.includes('born')) return false
+  if (intent.miami === 'based' && !artist.miami.some((m) => m === 'lives' || m === 'works')) return false
+  return true
+}
+
 export function rank(artists: Artist[], intent: Intent, limit = 24): SearchHit[] {
+  const filtered = artists.filter((a) => passesFilters(a, intent))
+  const pool = filtered.length ? filtered : artists
   const hits: SearchHit[] = []
-  for (const artist of artists) {
+  for (const artist of pool) {
     let text = cache.get(artist)
     if (!text) cache.set(artist, (text = haystack(artist)))
     let score = 0
@@ -81,19 +94,19 @@ export function rank(artists: Artist[], intent: Intent, limit = 24): SearchHit[]
       reasons.push(DISCIPLINE_LABEL[matched])
     }
     for (const v of intent.vibes) {
-      const g = artist.genres.find((x) => VIBES[v]?.genres.test(x.toLowerCase()))
+      const g = artist.genres.find((x) => VIBES[v]?.genres.test(fold(x)))
       if (g) {
         score += 5
         reasons.push(`${v[0].toUpperCase()}${v.slice(1)} · ${g}`)
       }
     }
     for (const k of intent.keywords) {
-      const tagMatch = [...artist.genres, ...artist.occupations, ...artist.instruments, ...artist.movements].find((t) => t.toLowerCase().includes(k))
+      const tagMatch = [...artist.genres, ...artist.occupations, ...artist.instruments, ...artist.movements].find((t) => fold(t).includes(k))
       if (tagMatch) {
         score += 3
         if (!reasons.includes(tagMatch)) reasons.push(tagMatch)
       } else if (text.includes(k)) score += 1
-      if (artist.name.toLowerCase().includes(k)) score += 8
+      if (fold(artist.name).includes(k)) score += 8
     }
     if (intent.miami === 'born' && artist.miami.includes('born')) { score += 2; reasons.push('Miami-born') }
     if (intent.miami === 'based' && (artist.miami.includes('lives') || artist.miami.includes('works'))) { score += 2; reasons.push('Miami-based') }

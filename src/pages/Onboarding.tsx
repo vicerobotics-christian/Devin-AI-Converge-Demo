@@ -42,7 +42,7 @@ export function Onboarding({ existing, taken, onDone }: { existing: Artist | nul
   useEffect(() => { headingRef.current?.focus() }, [step])
 
   const cleanHandle = handle.toLowerCase().replace(/[^a-z0-9-]/g, '')
-  const handleTaken = !existing && taken.has(cleanHandle)
+  const handleTaken = taken.has(cleanHandle)
   const primary = disciplines[0] ?? 'visual'
   const draft: Artist = {
     id: cleanHandle || 'you',

@@ -16,8 +16,9 @@ function ReachOut({ artist, me }: { artist: Artist; me: Artist | null }) {
   const site = artist.links.find((l) => l.type === 'website')
   const ig = artist.links.find((l) => l.type === 'instagram')
   const x = artist.links.find((l) => l.type === 'x')
+  const myLinks = me?.links.slice(0, 2).map((l) => l.url).join(' · ')
   const intro = me
-    ? `Hi ${artist.name}, I'm ${me.name}, a Miami ${DISCIPLINE_LABEL[me.discipline].toLowerCase()} artist. I found you on Converge and would love to talk about a collaboration. My profile: ${location.origin}/a/${me.id}`
+    ? `Hi ${artist.name}, I'm ${me.name}, a Miami ${DISCIPLINE_LABEL[me.discipline].toLowerCase()} artist. I found you on Converge and would love to talk about a collaboration.${myLinks ? ` My work: ${myLinks}` : ''}`
     : `Hi ${artist.name}, I found you on Converge and would love to talk about a collaboration.`
   const options = [
     artist.email && { label: 'Email', detail: artist.email, href: `mailto:${artist.email}?subject=${encodeURIComponent('Collaboration via Converge')}&body=${encodeURIComponent(intro)}`, note: 'Official email listed on Wikidata' },

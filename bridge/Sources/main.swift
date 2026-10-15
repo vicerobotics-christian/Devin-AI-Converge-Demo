@@ -66,6 +66,9 @@ func handle(_ raw: Data) async -> Data {
     let origin = lines.first { $0.lowercased().hasPrefix("origin:") }.map { $0.dropFirst(7).trimmingCharacters(in: .whitespaces) }
     let body = raw[split.upperBound...]
 
+    if let origin, !allowedOrigins.contains(origin) {
+        return response("403 Forbidden", json(["error": "origin not allowed"]), origin: nil)
+    }
     if method == "OPTIONS" { return response("204 No Content", Data(), origin: origin) }
     do {
         switch (method, path) {

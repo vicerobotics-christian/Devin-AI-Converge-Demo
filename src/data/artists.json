@@ -2498,12 +2498,7 @@
      "url": "https://www.imdb.com/name/nm2325620/"
     }
    ],
-   "photo": {
-    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Chris_Murphy_on_Meet_the_Press.jpg/500px-Chris_Murphy_on_Meet_the_Press.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "page": "https://commons.wikimedia.org/wiki/File:Chris_Murphy_on_Meet_the_Press.jpg",
-    "author": "United State Senate - the Office of Chris Murphy",
-    "license": "Public domain"
-   },
+   "photo": null,
    "sources": {
     "wikipedia": "https://en.wikipedia.org/wiki/Chuck_Todd",
     "wikidata": "https://www.wikidata.org/wiki/Q1089199"
@@ -4503,7 +4498,7 @@
    "photo": {
     "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Gloria_Estefan_by_John_Mathew_Smith.jpg/500px-Gloria_Estefan_by_John_Mathew_Smith.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
     "page": "https://commons.wikimedia.org/wiki/File:Gloria_Estefan_by_John_Mathew_Smith.jpg",
-    "author": "Kingkongphoto &amp; www.celebrity-photos.com from Laurel  Maryland, USA",
+    "author": "Kingkongphoto & www.celebrity-photos.com from Laurel  Maryland, USA",
     "license": "CC BY-SA 2.0"
    },
    "sources": {
@@ -9047,7 +9042,7 @@
    "photo": {
     "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/Robbie_Rivera.jpg/500px-Robbie_Rivera.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
     "page": "https://commons.wikimedia.org/wiki/File:Robbie_Rivera.jpg",
-    "author": "Vincent &amp; Bella Productions from Global, USA",
+    "author": "Vincent & Bella Productions from Global, USA",
     "license": "CC BY 2.0"
    },
    "sources": {
@@ -11057,7 +11052,7 @@
    "photo": {
     "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/Ziggy_Marley_1997.jpg/500px-Ziggy_Marley_1997.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
     "page": "https://commons.wikimedia.org/wiki/File:Ziggy_Marley_1997.jpg",
-    "author": "Kingkongphoto &amp; www.celebrity-photos.com from Laurel  Maryland, USA",
+    "author": "Kingkongphoto & www.celebrity-photos.com from Laurel  Maryland, USA",
     "license": "CC BY-SA 2.0"
    },
    "sources": {

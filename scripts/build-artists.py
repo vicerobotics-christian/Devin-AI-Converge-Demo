@@ -5,6 +5,7 @@ Every profile is a real person with an English Wikipedia article and a Wikidata 
 to Miami (born in, lives in, or works in). Links come only from Wikidata statements;
 photos only from Wikimedia Commons with their license and author recorded.
 """
+import html
 import json
 import re
 import sys
@@ -17,6 +18,8 @@ from pathlib import Path
 UA = "DevinConvergeDemo/0.1 (https://github.com/vicerobotics-christian/Devin-AI-Converge-Demo)"
 OUT = Path(__file__).resolve().parent.parent / "src" / "data" / "artists.json"
 TARGET = 200
+# Wikidata items whose image (P18) shows someone else; checked by hand.
+PHOTO_EXCLUDE = {"Q1089199"}  # Chuck Todd → photo of Chris Murphy
 
 DISCIPLINES = {
     "music": {"Q177220", "Q639669", "Q2252262", "Q183945", "Q130857", "Q36834", "Q855091", "Q386854", "Q753110", "Q488205", "Q1259917"},
@@ -213,7 +216,7 @@ def image_meta(files):
             info = (page.get("imageinfo") or [{}])[0]
             meta = info.get("extmetadata", {})
             title = norm.get(page.get("title"), page.get("title", ""))
-            strip = lambda s: re.sub(r"<[^>]+>", "", s or "").strip()  # noqa: E731
+            strip = lambda s: html.unescape(re.sub(r"<[^>]+>", "", s or "")).strip()  # noqa: E731
             if info.get("thumburl"):
                 out[title.removeprefix("File:")] = {
                     "src": info["thumburl"],
@@ -288,7 +291,7 @@ def main():
             slug = f"{slug}-{q.lower()}"
         slugs.add(slug)
         img = None
-        if d["image"]:
+        if d["image"] and q not in PHOTO_EXCLUDE:
             img = images.get(urllib.parse.unquote(d["image"].rsplit("/", 1)[-1]).replace("_", " "))
         links = [{"type": k, "url": LINK_URL[k].format(urllib.parse.quote(val, safe=":/?=&.-_@~")) if k != "website" else val}
                  for k, val in d["links"].items()]
